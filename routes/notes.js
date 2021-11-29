@@ -8,6 +8,13 @@ const uuid = require('uuid')
 notes.get('/', (req, res) => {
     console.log(`${req.method} received for notes!}`)
 
+    fs.readFile(db, 'utf8', (err, data) => {
+        if(err){
+            console.log(err)
+        }else{
+            res.json(JSON.parse(data))
+        }
+    })
 })
 
 notes.post('/', (req, res) => {
