@@ -7,17 +7,15 @@ const util = require('util')
 
 const readFromFile = util.promisify(fs.readFile)
 
+
+//initial get for notes
 notes.get('/', (req, res) => {
     console.log(`${req.method} received for notes!}`)
 
-    fs.readFile(db, 'utf8', (err, data) => {
-        if (err) {
-            console.log(err)
-        } else {
-            res.json(JSON.parse(data))
-        }
-    })
+    readFromFile('./db/db.json')
+    .then((data) => res.json(JSON.parse(data)))
 })
+
 
 notes.post('/', (req, res) => {
     console.log(`${req.method} received for notes!}`)
@@ -36,6 +34,7 @@ notes.post('/', (req, res) => {
             } else {
                 const parsedData = JSON.parse(data)
                 parsedData.push(newNote)
+                res.json(parsedData)
                 fs.writeFile(db, JSON.stringify(parsedData, null, 4), (err) =>
                     err ? console.error(err) : console.log(`note written to ${db}`)
                 );
