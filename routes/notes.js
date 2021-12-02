@@ -13,10 +13,10 @@ notes.get('/', (req, res) => {
     console.log(`${req.method} received for notes!}`)
 
     readFromFile('./db/db.json')
-    .then((data) => res.json(JSON.parse(data)))
+        .then((data) => res.json(JSON.parse(data)))
 })
 
-
+//handle post request for notes
 notes.post('/', (req, res) => {
     console.log(`${req.method} received for notes!}`)
 
@@ -44,18 +44,20 @@ notes.post('/', (req, res) => {
     }
 })
 
+//handle deleting notes
 notes.delete('/:id', (req, res) => {
     const noteId = req.params.id
     readFromFile('./db/db.json')
-    .then((data) => JSON.parse(data))
-    .then((json) => {
-      const result = json.filter((note) => note.id !== noteId);
+        .then((data) => JSON.parse(data))
+        .then((json) => {
+            const result = json.filter((note) => note.id !== noteId);
 
-      fs.writeFile(db, JSON.stringify(result, null, 4), (err) =>
-    err ? console.error(err) : console.log(`Data written to ${db}`)
-  )
-      res.json(`Item ${noteId} has been deleted`);
-    })
+            fs.writeFile(db, JSON.stringify(result, null, 4), (err) =>
+                err ? console.error(err) : console.log(`Data written to ${db}`)
+            )
+            res.json(`Item ${noteId} has been deleted`);
+        })
 })
 
+//export
 module.exports = notes
